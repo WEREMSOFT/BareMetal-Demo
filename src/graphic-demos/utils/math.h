@@ -71,4 +71,19 @@ static inline size_t strlen(const char *str) {
     }
     return s - str;
 }
+
+// Sine function using Taylor series approximation
+static inline float sin(float x) {
+    float term = x;
+    float sum = 0;
+    int sign = 1;
+
+    for (int i = 1; term > 0.00001 || term < -0.00001; i += 2) {
+        sum += sign * term;
+        term = term * x * x / ((i + 1) * (i + 2));
+        sign = -sign;
+    }
+
+    return sum;
+}
 #endif

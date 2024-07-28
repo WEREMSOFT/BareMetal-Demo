@@ -6,6 +6,8 @@
 #define __STACK_ALLOC_IMPLEMENTATION__
 #include "utils/stack_allocator.h"
 
+#include "utils/utils.h"
+
 void putpixel(int x, int y, char red, char green, char blue);
 void drawline(int x0, int y0, int x1, int y1, char red, char green, char blue);
 
@@ -62,7 +64,10 @@ void switchBuffers()
 
 int main(void)
 {
+	x_res = *(uint16_t *)(0x5088);
+	y_res = *(uint16_t *)(0x508A);
 	unsigned char key = 0;
+	printf("Resolution %d - %d \n", x_res, y_res);
 	printf("Commands:\n d/a/w/s to rotate the cube\nq to go back to shell\nPress SPACE to continue.\n");
 
 	while(key != ASCII_SPACE)
@@ -72,8 +77,7 @@ int main(void)
 	stackAllocator = stackAllocatorCreateP(((uint64_t *)(0xFFFF800000F00000)));
 	// Gather video memory address, x & y resolution, and BPP
 	video_memory = (unsigned char *)(*(uint64_t *)(0x5080));
-	x_res = *(uint16_t *)(0x5088);
-	y_res = *(uint16_t *)(0x508A);
+
 	depth = 32;
 	frameBufferSize = x_res * y_res * 4;
 	frame_buffer = stackAllocatorAlloc(stackAllocator, frameBufferSize);
@@ -146,21 +150,3 @@ void putpixel(int x, int y, char red, char green, char blue)
 	frame_buffer[offset+2] = red;
 }
 
-// Función para leer el Time Stamp Counter
-static inline uint64_t rdtsc(void) {
-    uint32_t lo, hi;
-    asm volatile ("rdtsc" : "=a" (lo), "=d" (hi));
-    return ((uint64_t)hi << 32) | lo;
-}
-
-// Implementación de usleep utilizando rdtsc
-void usleep(uint64_t microseconds) {
-    // Supongamos una frecuencia de CPU de 3.0 GHz (ajusta según sea necesario)
-    uint64_t cpu_frequency_hz = 3000000000;
-    uint64_t cycles_to_wait = (cpu_frequency_hz / 1000000) * microseconds;
-
-    uint64_t start = rdtsc();
-    while ((rdtsc() - start) < cycles_to_wait) {
-        // Espera ocupada (busy-wait)
-    }
-}

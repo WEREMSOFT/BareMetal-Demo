@@ -20,5 +20,8 @@ if [ "$(uname)" != "Darwin" ]; then
 
 	gcc $CFLAGS -o graphic-demos/cube3d.o graphic-demos/cube3d.c
 	ld -T c.ld -o ../bin/cube3d.app crt0.o graphic-demos/cube3d.o libBareMetal.o
+
+	gcc $CFLAGS -o graphic-demos/modelViewer.o graphic-demos/modelViewer.c
+	ld -T c.ld -o ../bin/modelViewer.app crt0.o graphic-demos/modelViewer.o libBareMetal.o
 fi
 cd ..

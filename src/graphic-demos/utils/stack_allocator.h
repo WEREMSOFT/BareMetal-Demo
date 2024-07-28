@@ -148,8 +148,6 @@ void *stackAllocatorRealloc(StackAllocator *_this, void *pointer, size_t size)
 
 static StackAllocator *stackAllocator;
 
-// unsigned char buffer[1920255] = {0};
-
 void staticAllocatorInit()
 {
     stackAllocator = stackAllocatorCreateP(((uint64_t *)(0xFFFF800000F00000)));
