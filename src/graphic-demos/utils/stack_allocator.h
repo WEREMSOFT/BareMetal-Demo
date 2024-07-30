@@ -61,47 +61,33 @@ void *memcpy(void *dest, const void *src, size_t n) {
 
 StackAllocator *stackAllocatorCreateP(void* stackBase)
 {
-	printf("WHAT?\n");
 	char test[500];
-	printf("address %p\n", test);
     StackAllocator *_this = (StackAllocator *)((stackBase));
-	printf("address %p\n", _this);
-	printf("WHAT2?\n");
 
     if (!_this)
     {
         printf("Error creating stack allocator %s::%d\n", __FILE__, __LINE__);
         return NULL;
     }
-	printf("WHAT3?\n");
     _this->header.capacity = UINT32_MAX;
-	printf("WHAT4?\n");
 	printf("Stack allocator created with capacity of %z\n", _this->header.capacity);
-	printf("WHAT5?\n");
 
     return _this;
 }
 
 StackAllocator *stackAllocatorCreate()
 {
-	printf("WHAT?\n");
 	char test[500];
-	printf("address %p\n", test);
 														  //0xFFFF800000000000
     StackAllocator *_this = (StackAllocator *)((uint64_t *)(0xFFFFFFFFFF000000));
-	printf("address %p\n", _this);
-	printf("WHAT2?\n");
 
     if (!_this)
     {
         printf("Error creating stack allocator %s::%d\n", __FILE__, __LINE__);
         return NULL;
     }
-	printf("WHAT3?\n");
     _this->header.capacity = 0xff;
-	printf("WHAT4?\n");
 	printf("Stack allocator created with capacity of %d", _this->header.capacity);
-	printf("WHAT5?\n");
 
     return _this;
 }
